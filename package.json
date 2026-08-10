@@ -1,0 +1,42 @@
+{
+  "name": "mill-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx scripts/seed.ts",
+    "desktop:stage": "node scripts/build-desktop.mjs",
+    "desktop:build": "node scripts/tauri-build.mjs",
+    "desktop:install": "npm run desktop:build && node scripts/install-desktop.mjs"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.0",
+    "@tailwindcss/postcss": "^4.3.0",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "lucide-react": "^1.14.0",
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}
