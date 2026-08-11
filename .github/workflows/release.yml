@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    name: Build and publish macOS app
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Check the tag matches the app version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg=$(node -p "require('./package.json').version")
+          app=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          echo "tag=$tag package.json=$pkg tauri.conf.json=$app"
+          if [ "$tag" != "$pkg" ] || [ "$tag" != "$app" ]; then
+            echo "::error::Version mismatch. Bump package.json and src-tauri/tauri.conf.json to $tag before tagging."
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Build the desktop app
+        run: npm run desktop:build
+
+      - name: Collect artifacts
+        id: artifacts
+        run: |
+          dmg=$(ls src-tauri/target/release/bundle/dmg/*.dmg | head -1)
+          echo "dmg=$dmg" >> "$GITHUB_OUTPUT"
+          ls -lh "$dmg"
+
+      - name: Publish the release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DMG: ${{ steps.artifacts.outputs.dmg }}
+        run: |
+          notes=$'Drag Mill to Applications, then run:\n\n```\nxattr -cr /Applications/Mill.app\n```\n\nMill is not code-signed, so macOS blocks it on first open without this. Apple Silicon only.'
+          gh release create "$GITHUB_REF_NAME" \
+            --title "Mill $GITHUB_REF_NAME" \
+            --notes "$notes" \
+            "$DMG"
+
+      - name: Upload build artifact
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mill-dmg
+          path: src-tauri/target/release/bundle/dmg/*.dmg
