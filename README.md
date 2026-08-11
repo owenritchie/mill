@@ -1,10 +1,10 @@
 # Mill
 
-A hierarchy based thinking tool to help you breeze through decisions.
+A hierarchy-based thinking tool to help you breeze through decisions.
 
-Everything lives locally, and can be modified via a node-based canvas editor, a table or a text editor. Export via common formats (JSON, Markdown, CSV) or via customizable hooks that interface with additional resources such as MCP servers or databases. 
+Everything lives locally, and can be modified via a node-based canvas editor, a table, or a text editor. Export to common formats (JSON, Markdown, CSV) or via customizable hooks that interface with additional resources such as MCP servers or databases.
 
-Use AI models to help speed up tedious task planning or enhance existing ideas. Full support for Ollama models through an endpoint, and Claude models through the CLI (using a user's subscription). When I set out to make this project open source was top of mind
+Use AI models to help speed up tedious task planning or enhance existing ideas. Full support for Ollama models through an endpoint, and Claude models through the CLI (using a user's subscription).
 
 ---
 
@@ -23,7 +23,7 @@ Apple Silicon only for now.
 ## Requirements
 
 - **macOS** on Apple Silicon (for the packaged app)
-- **[Ollama](https://ollama.com)** and/or the **Claude CLI**  (only if you want AI features)
+- **[Ollama](https://ollama.com)** and/or the **Claude CLI** (only if you want AI features)
 
 ## Development
 
