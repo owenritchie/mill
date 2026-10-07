@@ -823,7 +823,7 @@ export function Workspace({
   const totalDecisions = topics.reduce((sum, i) => sum + i.decisions.length, 0);
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: "var(--paper)" }}>
+    <div style={{ display: "flex", height: "100%", overflow: "hidden", background: "var(--paper)" }}>
       <div
         style={{
           flexShrink: 0,
